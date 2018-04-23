@@ -1,0 +1,25 @@
+.login-wrapper {
+    background-image: url('./img/TVYTbAXWheQpRcWDaDMu.svg');
+    background-repeat: no-repeat;
+    background-position: center 110px;
+    background-size: 100%;
+    background-color:  #f0f2f5;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    .login-header {
+      width: 200px;
+      text-align: center;
+      margin: 150px auto 0;
+      font-size: 33px;
+      color: rgba(0,0,0,.85);
+      font-weight: 600;
+    }
+    .login-form {
+      width: 368px;
+      margin: 50px auto 0;
+      .form-item {
+        margin-bottom: 20px;
+      }
+    }
+  }

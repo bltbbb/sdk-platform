@@ -1,0 +1,27 @@
+.list-header {
+    .title {
+        overflow: hidden;
+        padding-right: 2px;
+        h1 {
+            float: left;
+            font-size: 14px;
+            color: rgba(0,0,0,.45);
+        }
+        .tips {
+            float: right;
+        }
+    }
+    .value {
+        font-size: 20px;
+        margin-bottom: 0;
+        color: rgba(0,0,0,.85);
+        font-size: 30px;
+        font-family: "Monospaced Number";
+    }
+    .cart-wrapper {
+        width: 14.2857%;
+        display:inline-block;
+        padding: 0 5px;
+        margin-bottom: 10px;
+    }
+}

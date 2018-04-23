@@ -1,0 +1,29 @@
+#main-layout {
+  height: 100%;
+}
+#main-layout .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color .3s;
+  }
+  
+#main-layout .trigger:hover {
+  color: #1890ff;
+}
+
+#main-layout .logo {
+  height: 32px;
+  margin: 16px;
+  text-align: center;
+  background: #011529;
+  overflow: hidden;
+  h2 {
+    color: #fff;
+    font-size: 20px;
+    font-family: "微软雅黑";
+    font-weight: 500;
+    display: inline-block;
+  }
+}
