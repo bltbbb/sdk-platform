@@ -139,7 +139,6 @@ const pieOption = {
     },
    backgroundColor:'#ffffff',
     series: [{
-        hoverAnimation: false, //设置饼图默认的展开样式
         radius: [100, 150],
         name: 'pie',
         type: 'pie',

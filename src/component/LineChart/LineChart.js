@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import echarts from 'echarts'
-import { Checkbox,message } from 'antd'
+import { Checkbox,message,Card } from 'antd'
 import './LIneChart.scss'
 
 const CheckboxGroup = Checkbox.Group;
@@ -87,10 +87,12 @@ class LineChart extends Component {
     render() {
         return (
             <div className="line-chart-wrapper">
-                <div className="checkbox-wrapper">
-                    <CheckboxGroup options={checkOptions} value={this.state.checkValue} onChange={this.onChange.bind(this)} />
-                </div>
-                <div id="lineChart"></div>
+                <Card>
+                    <div className="checkbox-wrapper">
+                        <CheckboxGroup options={checkOptions} value={this.state.checkValue} onChange={this.onChange.bind(this)} />
+                    </div>
+                    <div id="lineChart"></div>
+                </Card>
             </div>
         );
     }

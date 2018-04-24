@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { getMenuKey } from '../../../redux/menu.redux'
 import urlKeyList from './config'
 
+import './SideMenu.scss'
+
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu
 
@@ -40,7 +42,7 @@ class SideMenu extends Component {
       }
     render() {
         return (
-            <div style={{background:'#001529'}}>
+            <div className="side-menu-wrapper">
                 <Sider
                     trigger={null}
                     collapsible

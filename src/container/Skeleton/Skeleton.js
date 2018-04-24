@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layout, Menu, Icon } from 'antd'
+import { Layout, Menu, Icon, Dropdown } from 'antd'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -23,24 +23,47 @@ const SubMenu = Menu.SubMenu;
 class Skeleton extends Component {
   state = {
     collapsed: false,
+    dropdown: false
   };
   toggle = () => {
       this.setState({
           collapsed: !this.state.collapsed,
       });
   }
+  toggledropdown(val){
+    this.setState({
+      dropdown: val
+    })
+  }
+  loginOut(){
+    this.props.history.push('/login')
+  }
   render() {
+    const dropdownData = (
+      <Menu>
+        <Menu.Item key="0">
+          <span style={{padding:'0 5px'}} onClick={this.loginOut.bind(this)}><Icon type="logout"></Icon> 退出登录</span>
+        </Menu.Item>
+      </Menu>
+    )
     return (
       <Layout id="main-layout">
           <SideMenu collapsed={this.state.collapsed} {...this.props}></SideMenu>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}>
-            <Icon
-              className="trigger"
-              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-              onClick={this.toggle}
-            />
-          </Header>
+          <div className="skeleton-header">
+            <Header style={{ background: '#fff', padding: 0 }}>
+              <Icon
+                className="trigger"
+                type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+                onClick={this.toggle}
+              />
+              <div className={`header-user${this.state.dropdown?' dropdown-header':''}`} onMouseEnter={this.toggledropdown.bind(this,true)} onMouseLeave={this.toggledropdown.bind(this,false)}>
+                <Dropdown overlay={dropdownData} placement="bottomRight">
+                  <p>admin <Icon type="down" /></p>
+                </Dropdown>
+              </div>
+            </Header>
+          </div>
           <BreadcrumbComp menuKey={this.props.menuKey}></BreadcrumbComp>
           {this.props.location.pathname === '/RealtimeData' ? null : <DateComp></DateComp>}
           <Content style={{ margin: '24px 16px', background: '#f0f2f5', minHeight: 280 }}>

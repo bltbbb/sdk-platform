@@ -1,5 +1,22 @@
 #main-layout {
   height: 100%;
+  .header-user {
+    float: right;
+    margin-right: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    p {
+      margin-bottom: 0;
+      padding: 0 10px;
+    }
+    &.dropdown-header {
+      background: #e6f7ff;
+    }
+  }
+  .skeleton-header {
+    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+    z-index: 9;
+  }
 }
 #main-layout .trigger {
     font-size: 18px;
