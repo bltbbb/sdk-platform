@@ -10,13 +10,6 @@ import './SideMenu.scss'
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu
 
-// const urlKeyList = {
-//     '/RealtimeData':{
-//         currentKey: '实时数据',
-//         fatherKey: '数据概览'
-//     },
-// }
-
 @connect(
     state=>state,
     { getMenuKey }
@@ -30,6 +23,7 @@ class SideMenu extends Component {
         const pathname = this.props.location.pathname
         if(!this.props.menuKey.currentKey){
             const data = urlKeyList[pathname]
+            console.log(data)
             this.props.getMenuKey(data)
         }
     }
@@ -60,6 +54,16 @@ class SideMenu extends Component {
                             <Menu.Item key="实时数据"><Link to='/RealtimeData'>实时数据</Link></Menu.Item>
                             <Menu.Item key="历史趋势"><Link to='/HistoryTrend'>历史趋势</Link></Menu.Item>
                             <Menu.Item key="开发者统计"><Link to='/DevStatistic'></Link>开发者统计</Menu.Item>
+                            </SubMenu>
+                            <SubMenu
+                            key="日志审计"
+                            title={<span><Icon type="user" /><span>日志审计</span></span>}
+                            >
+                            <Menu.Item key="登录日志"><Link to='/LoginLog'>登录日志</Link></Menu.Item>
+                            <Menu.Item key="消息推送"><Link to='/MessagePush'>消息推送</Link></Menu.Item>
+                            <Menu.Item key="操作日志"><Link to='/OperationLog'></Link>操作日志</Menu.Item>
+                            <Menu.Item key="接口调用日志"><Link to='/InterfaceLog'></Link>接口调用日志</Menu.Item>
+                            <Menu.Item key="访问日志"><Link to='/AccessLog'></Link>访问日志</Menu.Item>
                             </SubMenu>
                         </Menu> :
                         null

@@ -11,6 +11,10 @@ const urlKeyList = {
         currentKey: '开发者统计',
         fatherKey: '数据概览'
     },
+    '/LoginLog':{
+        currentKey: '登录日志',
+        fatherKey: '日至审计'
+    },
 }
 
 export default urlKeyList

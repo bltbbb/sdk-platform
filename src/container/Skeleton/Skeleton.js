@@ -12,6 +12,7 @@ import DateComp from '../../component/DateComp/DateComp'
 //router component
 import RealtimeData from '../RealtimeData/RealtimeData'
 import HistoryTrend from '../HistoryTrend/HistoryTrend'
+import LoginLog from '../Log/LoginLog'
 
 const { Header, Sider, Content } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -69,6 +70,7 @@ class Skeleton extends Component {
           <Content style={{ margin: '24px 16px', background: '#f0f2f5', minHeight: 280 }}>
             <Route path='/RealtimeData' component={RealtimeData}></Route>
             <Route path='/HistoryTrend' component={HistoryTrend}></Route>
+            <Route path='/LoginLog' component={LoginLog}></Route>
           </Content>
         </Layout>
       </Layout>
