@@ -1,44 +1,66 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import { Input,Card,Button } from 'antd'
+import { Input,Card,Button,Select  } from 'antd'
 
 import DateComp from '../../component/DateComp/DateComp'
 import TableComp from '../../component/TableComp/TableComp'
 
+const { Option } = Select
+
 const columns = [
     {
-        title: '客户端id ',
-        dataIndex: 'clientIp',
+        title: '日志ID ',
+        dataIndex: 'logId',
+        width: 100
     }, 
     {
-        title: '浏览器类型',
-        dataIndex: 'browserType',
+        title: '错误消息',
+        dataIndex: 'errMsg',
+        width: 100
     }, 
-    
     {
-        title: '登录时间',
-        dataIndex: 'loginTime',
+        title: '接口ID',
+        dataIndex: 'interfaceId',
+        width: 100
     },
     {
-        title: '服务器ip',
-        dataIndex: 'serverIp',
+        title: '输入参数',
+        dataIndex: 'invokeCon',
+        width: 100
+    },
+    {
+        title: '是否报错',
+        render: (text, record) => {
+            return (
+                <span>
+                    {record.isFail === 1 ? '是': '否'}
+                </span>
+            )
+        }
     },
     {
         title: '登录名',
         dataIndex: 'mainAccount',
+        width: 100
     },
     {
-        title: '客户端ua',
-        dataIndex: 'userAgent',
+        title: '服务IP',
+        dataIndex: 'serverIp',
+        width: 100
+    },
+    {
+        title: '调用时间',
+        dataIndex: 'invokeEndTime',
+        width: 100
     },
 ];
 
-class LoginLog extends Component {
+class InterfaceLog extends Component {
     state = {
         tableData: [],
         total : 0,
-        user: '',
-        explore: '',
+        invokeCont: '',
+        isFail: [],
         size: 10,
         current: 1,
     }
@@ -49,12 +71,12 @@ class LoginLog extends Component {
         const data = {
             pageSize: size,
             currentPage: page,
-            mainAccount: this.state.user,
-            browserType: this.state.explore,
-            startDate: startDate,
-            stopDate: stopDate
+            invokeCont: this.state.invokeCont,
+            isFail: this.state.isFail,
+            oprBeginTimeStart: startDate,
+            oprEndTimeStop: stopDate
         }
-        axios.post('/logLogin/page', data).then(res => {
+        axios.post('/logServerInvoke/page', data).then(res => {
             this.setState({
                 tableData: res.data.result.result,
                 total: res.data.result.totalCount
@@ -90,8 +112,11 @@ class LoginLog extends Component {
                 <DateComp dateChange={this.dateChange.bind(this)}></DateComp>
                 <div className="input-wrapper" style={{padding: '0 5px'}}>
                     <div className="input-main" style={{padding: '15px 20px 10px',background:'#fff'}}>
-                        <Input placeholder='操作用户' style={{ width: 200,marginRight:'20px' }} value={this.state.user} onChange = {this.onChange.bind(this,'user')}></Input>
-                        <Input placeholder='浏览器' style={{ width: 200,marginRight:'20px' }} value={this.state.explore}></Input>
+                        <Input placeholder='完整url' style={{ width: 200,marginRight:'20px' }} value={this.state.invokeCont} onChange = {this.onChange.bind(this,'invokeCont')}></Input>
+                        <Select placeholder="是否报错" style={{ width: 200,marginRight:'20px' }} allowClear value={this.state.isFail} onChange={value=>this.setState({isFail:value})}>
+                            <Option value="1">是</Option>
+                            <Option value="-1">否</Option>
+                        </Select>
                         <Button type="primary" shape="circle" icon="search" onClick={this.handleSearch.bind(this)} />
                     </div>
                 </div>
@@ -108,4 +133,4 @@ class LoginLog extends Component {
     }
 }
 
-export default LoginLog;
+export default InterfaceLog;

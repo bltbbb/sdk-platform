@@ -21,6 +21,7 @@ class SideMenu extends Component {
     }
     componentDidMount(){
         const pathname = this.props.location.pathname
+        console.log(pathname)
         if(!this.props.menuKey.currentKey){
             const data = urlKeyList[pathname]
             console.log(data)

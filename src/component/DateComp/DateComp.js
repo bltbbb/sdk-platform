@@ -27,28 +27,36 @@ class DateComp extends Component {
         const { value } = e.target
         switch (value) {
             case 'today':
+                this.props.dateChange(moment().format('YYYY-MM-DD'),moment().format('YYYY-MM-DD'))
                 this.setDateData([moment(),moment()])
                 break;
             case 'yesterday':
+                this.props.dateChange(moment().subtract(1, 'days').format('YYYY-MM-DD'),moment().subtract(1, 'days').format('YYYY-MM-DD'))
                 this.setDateData([moment().subtract(1, 'days'),moment().subtract(1, 'days')])
                 break;
             case '7day':
+                this.props.dateChange(moment().subtract(7, 'days').format('YYYY-MM-DD'),moment().subtract(1, 'days').format('YYYY-MM-DD'))
                 this.setDateData([moment().subtract(7, 'days'),moment()])
                 break;
             case '30day':
+                this.props.dateChange(moment().subtract(30, 'days').format('YYYY-MM-DD'),moment().format('YYYY-MM-DD'))
                 this.setDateData([moment().subtract(30, 'days'),moment()])
                 break;
             case '60day':
+                this.props.dateChange(moment().subtract(60, 'days').format('YYYY-MM-DD'),moment().format('YYYY-MM-DD'))
                 this.setDateData([moment().subtract(60, 'days'),moment()])
                 break;
             case 'all':
+                this.props.dateChange('','')
                 this.setDateData([])
                 break;
             default:
                 break;
         }
+        
       }
     pickerChange(dates,dateStrings){
+        this.props.dateChange(dateStrings[0],dateStrings[1])
         if(!!dates){
             this.setDateData(dates)
         }

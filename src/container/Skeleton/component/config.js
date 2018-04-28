@@ -13,7 +13,23 @@ const urlKeyList = {
     },
     '/LoginLog':{
         currentKey: '登录日志',
-        fatherKey: '日至审计'
+        fatherKey: '日志审计'
+    },
+    '/MessagePush':{
+        currentKey: '消息推送',
+        fatherKey: '日志审计'
+    },
+    '/OperationLog':{
+        currentKey: '操作日志',
+        fatherKey: '日志审计'
+    },
+    '/InterfaceLog':{
+        currentKey: '接口调用日志',
+        fatherKey: '日志审计'
+    },
+    '/AccessLog':{
+        currentKey: '访问日志',
+        fatherKey: '日志审计'
     },
 }
 

@@ -2,11 +2,12 @@ import axios from 'axios'
 import qs from 'qs'
 import Cookies from 'js-cookie';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = 'http://192.168.1.21:9999';
+// axios.defaults.baseURL = 'http://192.168.1.21:9999';
+axios.defaults.baseURL = 'http://47.104.74.197:9999';
 
 //POST传参序列化
 axios.interceptors.request.use((config) => {
-  var token = Cookies.get('re_adoptToken')
+  var token = Cookies.get('sdk-cookie')
   if(token){
     config.headers.adoptToken = token;
   }

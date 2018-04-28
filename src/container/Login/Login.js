@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Input,Icon,Button,Form } from 'antd';
 import axios from 'axios'
 import md5 from 'js-md5'
+import Cookies from 'js-cookie'
 
 import logo from './img/TVYTbAXWheQpRcWDaDMu.svg';
 import './Login.scss'
@@ -25,6 +26,7 @@ class Login extends Component {
             }
             axios.post('/authc/login',data).then(res=>{
                 if(res.data.status === 0){
+                    Cookies.set('sdk-cookie',res.data.result.adoptToken)
                     this.setState({
                         isLoading: false
                     })

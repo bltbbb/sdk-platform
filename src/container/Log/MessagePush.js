@@ -7,29 +7,37 @@ import TableComp from '../../component/TableComp/TableComp'
 
 const columns = [
     {
-        title: '客户端id ',
-        dataIndex: 'clientIp',
+        title: '日志ID ',
+        dataIndex: 'logId',
     }, 
     {
-        title: '浏览器类型',
-        dataIndex: 'browserType',
+        title: '附件',
+        dataIndex: 'filePath',
     }, 
     
     {
-        title: '登录时间',
-        dataIndex: 'loginTime',
+        title: '内容',
+        dataIndex: 'msgCont',
     },
     {
-        title: '服务器ip',
-        dataIndex: 'serverIp',
+        title: '标题',
+        dataIndex: 'msgTitle',
     },
     {
-        title: '登录名',
-        dataIndex: 'mainAccount',
+        title: '消息类型',
+        dataIndex: 'msgType',
     },
     {
-        title: '客户端ua',
-        dataIndex: 'userAgent',
+        title: '接收人',
+        dataIndex: 'receiver',
+    },
+    {
+        title: '开始发送时间 ',
+        dataIndex: 'sendBeginTime',
+    },
+    {
+        title: '结束发送时间 ',
+        dataIndex: 'sendEndTime',
     },
 ];
 
@@ -49,12 +57,12 @@ class LoginLog extends Component {
         const data = {
             pageSize: size,
             currentPage: page,
-            mainAccount: this.state.user,
-            browserType: this.state.explore,
-            startDate: startDate,
-            stopDate: stopDate
+            receiver: this.state.user,
+            msgTitle: this.state.explore,
+            sendBeginTimeStart: startDate,
+            sendEndTimeStop: stopDate
         }
-        axios.post('/logLogin/page', data).then(res => {
+        axios.post('/logMsgSend/page', data).then(res => {
             this.setState({
                 tableData: res.data.result.result,
                 total: res.data.result.totalCount
@@ -90,8 +98,8 @@ class LoginLog extends Component {
                 <DateComp dateChange={this.dateChange.bind(this)}></DateComp>
                 <div className="input-wrapper" style={{padding: '0 5px'}}>
                     <div className="input-main" style={{padding: '15px 20px 10px',background:'#fff'}}>
-                        <Input placeholder='操作用户' style={{ width: 200,marginRight:'20px' }} value={this.state.user} onChange = {this.onChange.bind(this,'user')}></Input>
-                        <Input placeholder='浏览器' style={{ width: 200,marginRight:'20px' }} value={this.state.explore}></Input>
+                        <Input placeholder='接收人' style={{ width: 200,marginRight:'20px' }} value={this.state.user} onChange = {this.onChange.bind(this,'user')}></Input>
+                        <Input placeholder='标题' style={{ width: 200,marginRight:'20px' }} value={this.state.explore}></Input>
                         <Button type="primary" shape="circle" icon="search" onClick={this.handleSearch.bind(this)} />
                     </div>
                 </div>
