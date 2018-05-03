@@ -12,7 +12,7 @@ export function menuKey(state=initState,action){
         case MENU_CLICK:
             return {...state,...action.payload}
         case MENU_DATA:
-            return {...state,...action.payload}
+            return {...state,menuData:action.payload}
         default:
            return state
     }

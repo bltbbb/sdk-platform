@@ -23,9 +23,11 @@ class AuthRouter extends Component {
             this.props.history.push('/login')
         }
         axios.post('/getAuthMenus').then(res=>{
-            if(res.status === 200){
+            if(res&&res.status === 200){
                 if(res.data.status === 0){
-                    this.props.getMenuData(res.data.result.result)
+                    if(this.props.menuKey.menuData.length === 0){
+                        this.props.getMenuData(res.data.result)
+                    }
                 }else {
                     this.props.history.push('/login')
                 }

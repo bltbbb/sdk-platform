@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
-import { Input,Icon,Button,Form } from 'antd';
+import { Input,Icon,Button,Form,message } from 'antd';
 import axios from 'axios'
 import md5 from 'js-md5'
 import Cookies from 'js-cookie'
+import { connect } from 'react-redux'
+import { getMenuData } from '../../redux/menu.redux'
 
 import './Login.scss'
 
 const FormItem = Form.Item
+
+@connect(
+    state=>state,
+    { getMenuData }
+)
 
 class Login extends Component {
     state = {
@@ -29,8 +36,27 @@ class Login extends Component {
                     this.setState({
                         isLoading: false
                     })
+                    axios.post('/getAuthMenus').then(res=>{
+                        if(res&&res.status === 200){
+                            if(res.data.status === 0){
+                                this.props.getMenuData(res.data.result)
+                            }else {
+                                this.props.history.push('/login')
+                            }
+                        }
+                    })
                     this.props.history.push('/RealtimeData')
+                }else {
+                    this.setState({
+                        isLoading: false
+                    })
+                    message.error(res.data.result.result.message)
                 }
+            }).catch(e => {
+                this.setState({
+                    isLoading: false
+                })
+                message.error(e.data.result.result.message)
             })
           }
         });

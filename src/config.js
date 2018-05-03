@@ -1,6 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
 import Cookies from 'js-cookie';
+import { message } from 'antd'
+
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.baseURL = 'http://192.168.1.21:9999';
 // axios.defaults.baseURL = 'http://47.104.74.197:9999';
@@ -38,7 +40,8 @@ axios.interceptors.response.use((res) =>{
   }
   return res;
 }, (error) => {
-  console.log("网络异常");
+  message.destroy();
+  message.error("接口异常");
   return Promise.reject(error);
 });
 export default axios;
