@@ -4,7 +4,6 @@ import axios from 'axios'
 import md5 from 'js-md5'
 import Cookies from 'js-cookie'
 
-import logo from './img/TVYTbAXWheQpRcWDaDMu.svg';
 import './Login.scss'
 
 const FormItem = Form.Item

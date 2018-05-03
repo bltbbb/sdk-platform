@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
 import Cookies from 'js-cookie'
+import { connect } from 'react-redux'
+import { getMenuData } from '../../redux/menu.redux'
+
+@connect(
+    state=>state,
+    { getMenuData }
+)
 
 @withRouter
 class AuthRouter extends Component {
@@ -16,19 +22,15 @@ class AuthRouter extends Component {
         if(!cookie){
             this.props.history.push('/login')
         }
-        // axios.get('/user/info').then(res=>{
-        //     if(res.status === 200){
-        //         if(res.data.code === 0){
-        //             const type = res.data.result.type
-        //             if(type === 'boss'&&pathName === '/genius'){
-        //                 this.props.history.push('/boss')
-        //             }
-        //             this.props.loadData(res.data.result)
-        //         }else {
-        //             this.props.history.push('/login')
-        //         }
-        //     }
-        // })
+        axios.post('/getAuthMenus').then(res=>{
+            if(res.status === 200){
+                if(res.data.status === 0){
+                    this.props.getMenuData(res.data.result.result)
+                }else {
+                    this.props.history.push('/login')
+                }
+            }
+        })
     }
     render() {
         return (

@@ -12,6 +12,7 @@ import BreadcrumbComp from '../../component/BreadcrumbComp/BreadcrumbComp'
 //router component
 import RealtimeData from '../RealtimeData/RealtimeData'
 import HistoryTrend from '../HistoryTrend/HistoryTrend'
+import DevStatistic from '../DevStatistic/DevStatistic'
 import LoginLog from '../Log/LoginLog'
 import MessagePush from '../Log/MessagePush'
 import OperationLog from '../Log/OperationLog'
@@ -26,8 +27,7 @@ import AccessLog from '../Log/AccessLog'
 // const InterfaceLogWrap = asyncComponent(() => import("../Log/InterfaceLog"));
 // const AccessLogWrap = asyncComponent(() => import("../Log/AccessLog"));
 
-const { Header, Sider, Content } = Layout;
-const SubMenu = Menu.SubMenu;
+const { Header, Content } = Layout;
 
 @connect(
   state=>state
@@ -51,11 +51,14 @@ class Skeleton extends Component {
   loginOut(){
     this.props.history.push('/login')
   }
-  componentWillMount() {
-    this.props.history.listen((data) => {
-      console.log(data)
-    })
-  }
+  //菜单权限
+  // componentWillUpdate() {
+  //   const arr = this.props.pagechange.menu
+  //   const pathname = this.props.history.location.pathname
+  //   if(arr.indexOf(pathname) === -1){
+  //     this.props.history.push('/LoginLog')
+  //   }
+  // }
   render() {
     const dropdownData = (
       <Menu>
@@ -86,6 +89,7 @@ class Skeleton extends Component {
           <Content style={{ margin: '24px 16px', background: '#f0f2f5', minHeight: 280 }}>
             <Route path='/RealtimeData' component={RealtimeData}></Route>
             <Route path='/HistoryTrend' component={HistoryTrend}></Route>
+            <Route path='/DevStatistic' component={DevStatistic}></Route>
             <Route path='/LoginLog' component={LoginLog}></Route>
             <Route path='/MessagePush' component={MessagePush}></Route>
             <Route path='/OperationLog' component={OperationLog}></Route>

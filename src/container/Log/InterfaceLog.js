@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import { Input,Card,Button,Select  } from 'antd'
+import { Input,Button,Select  } from 'antd'
 
 import DateComp from '../../component/DateComp/DateComp'
 import TableComp from '../../component/TableComp/TableComp'

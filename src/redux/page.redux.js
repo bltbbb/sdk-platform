@@ -4,7 +4,8 @@ const PAGE_CHANGE = 'PAGE_CHANGE'
 //reducer
 const initState = {
     pageSize: 10,
-    currentPage: 1
+    currentPage: 1,
+    menu: ['/RealtimeData','/HistoryTrend','/LoginLog']
 }
 export function pagechange(state = initState, action) {
     switch (action.type) {

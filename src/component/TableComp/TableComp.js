@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table,Card,Input } from 'antd'
+import { Table,Card } from 'antd'
 
 import './TableComp.scss'
 

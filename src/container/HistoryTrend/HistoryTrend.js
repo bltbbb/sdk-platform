@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Card } from 'antd'
 
 import ListHeader from '../../component/ListHeader/ListHeader'
 import LineChart from '../../component/LineChart/LineChart'

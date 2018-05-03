@@ -1,13 +1,17 @@
 const MENU_CLICK = 'MENU_CLICK'
+const MENU_DATA = 'MENU_DATA'
 
 //reducer
 const initState = {
     currentKey: '',
-    fatherKey: ''
+    fatherKey: '',
+    menuData: []
 }
 export function menuKey(state=initState,action){
     switch (action.type) {
         case MENU_CLICK:
+            return {...state,...action.payload}
+        case MENU_DATA:
             return {...state,...action.payload}
         default:
            return state
@@ -17,4 +21,8 @@ export function menuKey(state=initState,action){
 //action
 export function getMenuKey(data){
     return {type:MENU_CLICK,payload:data}
+}
+
+export function getMenuData(data){
+    return {type:MENU_DATA,payload:data}
 }
