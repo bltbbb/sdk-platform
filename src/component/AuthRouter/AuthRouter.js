@@ -21,18 +21,19 @@ class AuthRouter extends Component {
         const cookie = Cookies.get('sdk-cookie')
         if(!cookie){
             this.props.history.push('/login')
-        }
-        axios.post('/getAuthMenus').then(res=>{
-            if(res&&res.status === 200){
-                if(res.data.status === 0){
-                    if(this.props.menuKey.menuData.length === 0){
-                        this.props.getMenuData(res.data.result)
+        }else {
+            axios.post('/getAuthMenus').then(res=>{
+                if(res&&res.status === 200){
+                    if(res.data.status === 0){
+                        if(this.props.menuKey.menuData.length === 0){
+                            this.props.getMenuData(res.data.result)
+                        }
+                    }else {
+                        this.props.history.push('/login')
                     }
-                }else {
-                    this.props.history.push('/login')
                 }
-            }
-        })
+            })
+        }
     }
     render() {
         return (

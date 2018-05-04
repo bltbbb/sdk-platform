@@ -10,6 +10,12 @@ import './SideMenu.scss'
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu
 
+const iconClass = {
+    Dataoverview: 'info-circle-o',
+    LogMan:'solution',
+    Dicenum: 'api'
+}
+
 @connect(
     state => state,
     { getMenuKey }
@@ -42,14 +48,16 @@ class SideMenu extends Component {
                         <h2>魔方后台</h2>
                     </div>
                     {
-                        this.props.menuKey.fatherKey ?
+                        this.props.menuKey.currentKey ?
                             <Menu theme="dark" selectedKeys={[this.props.menuKey.currentKey]} defaultOpenKeys={[this.props.menuKey.fatherKey]} mode="inline" onClick={this.handleMenu}>
                                 {menuData.map(v => {
                                     if(v.children){
                                         return (
+                                            !v.emptyFolder 
+                                            &&
                                             <SubMenu
                                                 key={v.menuName}
-                                                title={<span><Icon type="user" /><span>{v.menuName}</span></span>}
+                                                title={<span><Icon type={iconClass[v.alias]} /><span>{v.menuName}</span></span>}
                                             >
                                             {v.children.map(v1=>{
                                                 return <Menu.Item key={v1.menuName}><Link to={`/${v1.alias}`}>{v1.menuName}</Link></Menu.Item>
@@ -59,8 +67,10 @@ class SideMenu extends Component {
                                     }else {
                                         return (
                                             <Menu.Item key={v.menuName}>
-                                                <Icon type="inbox" />
-                                                <span>{v.menuName}</span>
+                                                <Link to={`/${v.alias}`}>
+                                                    <Icon type={iconClass[v.alias]} />
+                                                    <span>{v.menuName}</span>
+                                                </Link>
                                             </Menu.Item>
                                         )
                                     }

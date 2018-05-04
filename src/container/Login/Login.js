@@ -32,7 +32,7 @@ class Login extends Component {
             }
             axios.post('/authc/login',data).then(res=>{
                 if(res.data.status === 0){
-                    Cookies.set('sdk-cookie',res.data.result.adoptToken)
+                    Cookies.set('sdk-cookie',res.data.result.adoptToken,{ expires: 1 })
                     this.setState({
                         isLoading: false
                     })

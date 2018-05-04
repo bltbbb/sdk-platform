@@ -31,6 +31,10 @@ const urlKeyList = {
         currentKey: '访问日志',
         fatherKey: '日志审计'
     },
+    '/Dicenum':{
+        currentKey: '枚举管理',
+        fatherKey: ''
+    },
 }
 
 export default urlKeyList

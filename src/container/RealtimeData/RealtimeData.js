@@ -197,7 +197,7 @@ class RealtimeData extends Component {
     }
     initMapChat(){
         this.mapChart = echarts.init(document.getElementById('mapCharts'));
-        axios.get('http://localhost:3000/china.json').then((res)=>{
+        axios.get('http://47.104.74.197:9998/china.json').then((res)=>{
           echarts.registerMap('china', res.data);
           this.mapChart.setOption(mapOption);
         })
