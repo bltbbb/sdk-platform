@@ -6,9 +6,9 @@ import thunk from 'redux-thunk'
 import { BrowserRouter,Route,Switch } from 'react-router-dom'
 import AuthRouter from './component/AuthRouter/AuthRouter'
 
+import './index.css'
 import reducer from './reducer'
 import './config'
-import './index.css'
 import asyncComponent from './component/AsyncComponent/AsyncComponent'
 
 // import Login from './container/Login/Login'

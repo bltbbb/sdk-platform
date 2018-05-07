@@ -104,14 +104,7 @@
     ],
     "plugins": [
       "transform-decorators-legacy",
-      [
-        "import",
-        {
-          "libraryName": "antd",
-          "libraryDirectory": "es",
-          "style": "css"
-        }
-      ]
+      ["import", {"libraryName": "antd", "style": "css"}]
     ]
   },
   "eslintConfig": {

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import { Input,Icon,Button,Form,message } from 'antd';
+import React, { Component } from 'react';
 import axios from 'axios'
 import md5 from 'js-md5'
 import Cookies from 'js-cookie'
@@ -93,6 +93,7 @@ class Login extends Component {
                                         placeholder="Enter your password"
                                         prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                         onPressEnter={this.login.bind(this)}
+                                        type="password"
                                     />
                                 )}
                             </FormItem>

@@ -28,6 +28,10 @@ time, mark, audio, video {
     background:transparent;
 }
 
+body {
+  height: 100vh;
+}
+
 /* //reset antd fiex */
 
 .ant-layout-content {

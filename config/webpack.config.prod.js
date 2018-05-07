@@ -269,7 +269,8 @@ module.exports = {
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin({
       "process.env": { 
-          NODE_ENV: JSON.stringify("production") 
+          NODE_ENV: JSON.stringify("production") ,
+          BASE_URL:"'http://47.104.74.197:9999'"
       }
   }),
     // Minify the code.
@@ -340,7 +341,7 @@ module.exports = {
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new BundleAnalyzerPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin()
+    new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

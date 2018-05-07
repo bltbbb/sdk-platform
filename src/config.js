@@ -4,8 +4,9 @@ import Cookies from 'js-cookie';
 import { message } from 'antd'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = 'http://192.168.1.21:9999';
+// axios.defaults.baseURL = 'http://192.168.1.21:9999';
 // axios.defaults.baseURL = 'http://47.104.74.197:9999';
+axios.defaults.baseURL = process.env.BASE_URL;
 
 //POST传参序列化
 axios.interceptors.request.use((config) => {
