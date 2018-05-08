@@ -75,6 +75,14 @@ module.exports = {
         .relative(paths.appSrc, info.absoluteResourcePath)
         .replace(/\\/g, '/'),
   },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM',
+    'react-router-dom': 'ReactRouterDOM',
+    'echarts': 'echarts',
+    'redux': 'Redux',
+    'moment': 'moment'
+  },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
@@ -268,11 +276,11 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin({
-      "process.env": { 
-          NODE_ENV: JSON.stringify("production") ,
-          BASE_URL:"'http://47.104.74.197:9999'"
+      "process.env": {
+        NODE_ENV: JSON.stringify("production"),
+        BASE_URL: "'http://47.104.74.197:9999'"
       }
-  }),
+    }),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
       compress: {
