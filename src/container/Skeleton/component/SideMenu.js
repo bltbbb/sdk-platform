@@ -12,8 +12,9 @@ const SubMenu = Menu.SubMenu
 
 const iconClass = {
     Dataoverview: 'info-circle-o',
-    LogMan:'solution',
-    Dicenum: 'api'
+    LogMan: 'solution',
+    Dicenum: 'api',
+    Manage: 'setting'
 }
 
 @connect(
@@ -22,11 +23,30 @@ const iconClass = {
 )
 
 class SideMenu extends Component {
+    rootSubmenuKeys = ['Dataoverview', 'LogMan', 'Dicenum', 'Manage'];
+    state = {
+        openKeys: [''],
+    };
+    onOpenChange = (openKeys) => {
+        const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
+        console.log(openKeys)
+        console.log(latestOpenKey)
+        if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+            this.setState({ openKeys:[latestOpenKey+''] });
+        } else {
+            this.setState({
+                openKeys: latestOpenKey ? [latestOpenKey] : [],
+            });
+        }
+    }
     componentDidMount() {
         const pathname = this.props.location.pathname
         if (!this.props.menuKey.currentKey) {
             const data = urlKeyList[pathname]
             this.props.getMenuKey(data)
+            this.setState({
+                openKeys: [urlKeyList[pathname].fatherKey+'']
+            })
         }
     }
     handleMenu = ({ item, key, keyPath }) => {
@@ -49,22 +69,27 @@ class SideMenu extends Component {
                     </div>
                     {
                         this.props.menuKey.currentKey ?
-                            <Menu theme="dark" selectedKeys={[this.props.menuKey.currentKey]} defaultOpenKeys={[this.props.menuKey.fatherKey]} mode="inline" onClick={this.handleMenu}>
+                            <Menu theme="dark" 
+                                selectedKeys={[this.props.menuKey.currentKey]} 
+                                openKeys={this.state.openKeys} 
+                                onOpenChange={this.onOpenChange}
+                                mode="inline" 
+                                onClick={this.handleMenu}>
                                 {menuData.map(v => {
-                                    if(v.children){
+                                    if (v.children) {
                                         return (
-                                            !v.emptyFolder 
+                                            !v.emptyFolder
                                             &&
                                             <SubMenu
                                                 key={v.menuName}
                                                 title={<span><Icon type={iconClass[v.alias]} /><span>{v.menuName}</span></span>}
                                             >
-                                            {v.children.map(v1=>{
-                                                return <Menu.Item key={v1.menuName}><Link to={`/${v1.alias}`}>{v1.menuName}</Link></Menu.Item>
-                                            })}
+                                                {v.children.map(v1 => {
+                                                    return <Menu.Item key={v1.menuName}><Link to={`/${v1.alias}`}>{v1.menuName}</Link></Menu.Item>
+                                                })}
                                             </SubMenu>
                                         )
-                                    }else {
+                                    } else {
                                         return (
                                             <Menu.Item key={v.menuName}>
                                                 <Link to={`/${v.alias}`}>

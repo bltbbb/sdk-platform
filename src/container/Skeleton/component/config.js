@@ -31,9 +31,21 @@ const urlKeyList = {
         currentKey: '访问日志',
         fatherKey: '日志审计'
     },
+    '/UserMan':{
+        currentKey: '用户管理',
+        fatherKey: '系统管理'
+    },
+    '/RoleMan':{
+        currentKey: '角色管理',
+        fatherKey: '系统管理'
+    },
+    '/SourceMan':{
+        currentKey: '资源管理',
+        fatherKey: '系统管理'
+    },
     '/Dicenum':{
         currentKey: '枚举管理',
-        fatherKey: ''
+        fatherKey: '系统管理'
     },
 }
 

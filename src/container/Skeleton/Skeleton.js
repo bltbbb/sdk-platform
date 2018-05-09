@@ -19,6 +19,7 @@ import OperationLog from '../Log/OperationLog'
 import InterfaceLog from '../Log/InterfaceLog'
 import AccessLog from '../Log/AccessLog'
 import Enumerating from '../Enumerating/Enumerating'
+import UserMan from '../UserMan/UserMan'
 
 // const RealtimeDataWrap = asyncComponent(() => import("../RealtimeData/RealtimeData"));
 // const HistoryTrendWrap = asyncComponent(() => import("../HistoryTrend/HistoryTrend"));
@@ -96,7 +97,8 @@ class Skeleton extends Component {
             <Route path='/OperationLog' component={OperationLog}></Route>
             <Route path='/InterfaceLog' component={InterfaceLog}></Route>
             <Route path='/AccessLog' component={AccessLog}></Route>
-            <Route path='/dicenum' component={Enumerating}></Route>
+            <Route path='/Dicenum' component={Enumerating}></Route>
+            <Route path='/UserMan' component={UserMan}></Route>
           </Content>
         </Layout>
       </Layout>

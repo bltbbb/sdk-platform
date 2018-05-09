@@ -1,0 +1,19 @@
+.userMan {
+    .table-wrapper {
+        margin-top: 15px;
+    }
+}
+.userMan-modal {
+    .ant-row {
+        width: 45%;
+        &:last-child {
+            .ant-form-item-label {
+                width: 73.34px;
+            }
+            .ant-form-item-control-wrapper {
+                margin-left: 12.2px;
+                width: 79.5%;
+            }
+        }
+    }
+}
