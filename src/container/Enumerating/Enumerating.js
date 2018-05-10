@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import TableComp from '../../component/TableComp/TableComp'
 import axios from 'axios'
-import { Button, Modal, Table, Card, Form, Row, Col, Input, Icon, message, Select,InputNumber } from 'antd'
+import { Button, Modal, Table, Card, Form, Input, message, Select,InputNumber } from 'antd'
 
 import './Enumerating.scss'
 

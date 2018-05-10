@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Layout, Menu, Icon, Dropdown } from 'antd'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { hot } from 'react-hot-loader'
 
 import './Skeleton.scss'
 
@@ -82,7 +83,7 @@ class Skeleton extends Component {
               />
               <div className={`header-user${this.state.dropdown?' dropdown-header':''}`} onMouseEnter={this.toggledropdown.bind(this,true)} onMouseLeave={this.toggledropdown.bind(this,false)}>
                 <Dropdown overlay={dropdownData} placement="bottomRight">
-                  <p>admin <Icon type="down" /></p>
+                  <p>admin<Icon type="down" /></p>
                 </Dropdown>
               </div>
             </Header>
@@ -106,4 +107,4 @@ class Skeleton extends Component {
   }
 }
 
-export default Skeleton
+export default hot(module)(Skeleton)

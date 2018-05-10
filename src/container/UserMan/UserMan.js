@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Card, Input, Form, Icon, Button, Select, Table, Modal, DatePicker, message, Tabs } from 'antd'
+import { Card, Input, Form, Button, Select, Table, Modal, DatePicker, message, Tabs, Transfer, Tree } from 'antd'
 import axios from 'axios'
 import moment from 'moment'
 
+import ChangePassword from './ChangePassword'
 import './UserMan.scss'
 
 const FormItem = Form.Item
@@ -17,8 +18,6 @@ const formItemLayout = {
     wrapperCol: { span: 17, offset: 1 }
 }
 
-console.log({ ...formItemLayout })
-
 class UserMan extends Component {
     state = {
         tableData: [],
@@ -27,9 +26,14 @@ class UserMan extends Component {
         current: 1,
         visible: false,
         visible1: false,
+        visible2: false,
         id: 0,
         isEdite: false,
         selectedRowKeys: [],
+        userId: '',
+        transferData: [],
+        targetKeys: [],
+        treeData: []
     }
     componentDidMount() {
         this.getUser()
@@ -44,7 +48,7 @@ class UserMan extends Component {
             currentPage: this.state.current
         }
         axios.post('/user/page', data).then((res) => {
-            if (res.data.status == 0) {
+            if (res.data.status === 0) {
                 this.setState({
                     total: res.data.result.totalCount,
                     tableData: res.data.result.result
@@ -73,6 +77,42 @@ class UserMan extends Component {
         })
         this.getData(current, size)
     }
+    getTreeData() {
+        axios.get('/menu/queryByUserId', {
+            params: {
+                userId: this.state.userId
+            }
+        }).then((res) => {
+            if (res.data.status == 0) {
+                let data = []
+                res.data.result.result.forEach((item, index) => {
+                    data.push(
+                        {
+                            key: item['M:2'],
+                            text: item.label
+                        }
+                    )
+                    if (item.children.length !== 0) {
+                        data.children = []
+                        item.children.forEach(i => {
+                            data.children.push({
+                                key: i['M:2'],
+                                text: i.label
+                            })
+                        })
+                    }
+                })
+                console.log(data)
+                this.setState({
+                    treeData: data
+                })
+            } else {
+                message.error(res.data.result.result.message)
+            }
+        }, (err) => {
+
+        })
+    }
     handelAdd = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -81,22 +121,23 @@ class UserMan extends Component {
                 const dateValue = values['birthday'] ? values['birthday'] : ''
                 const data = { ...values, 'birthday': dateValue ? values['birthday'].format('YYYY-MM-DD') : values['birthday'], 'valueTime': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')], validBegin: rangeValue[0].format('YYYY-MM-DD'), validEnd: rangeValue[1].format('YYYY-MM-DD') }
                 if (this.state.isEdite) {
-                    // axios.put('/dicenum', { ...values, isCache: values.isCache === '是' ? 1 : 0, id: this.state.id }).then(res => {
-                    //     if (res.data.status === 0) {
-                    //         message.success('修改成功')
-                    //         this.getData(this.state.current, this.state.size)
-                    //         this.setState({
-                    //             visible: false,
-                    //         });
-                    //     } else {
-                    //         message.error('修改失败')
-                    //     }
-                    // })
+                    data.userId = this.state.userId
+                    axios.put('/user', data).then(res => {
+                        if (res.data.status === 0) {
+                            this.getUser()
+                            message.success('修改成功')
+                            this.setState({
+                                visible1: false,
+                            });
+                        } else {
+                            message.error('修改失败')
+                        }
+                    })
                 } else {
                     axios.post('/user', data).then(res => {
                         if (res.data.status === 0) {
-                            message.success('添加成功')
                             this.getUser()
+                            message.success('添加成功')
                             this.setState({
                                 visible: false,
                             });
@@ -120,7 +161,14 @@ class UserMan extends Component {
     }
     handleCancel1 = (e) => {
         this.setState({
-            visible1: false
+            visible1: false,
+        })
+    }
+    handleOk2 = (e) => {
+    }
+    handleCancel2 = (e) => {
+        this.setState({
+            visible2: false,
         })
     }
     onSelectChange = (selectedRowKeys) => {
@@ -128,20 +176,87 @@ class UserMan extends Component {
     }
     configUser(data) {
         this.setState({
-            visible1: true
+            visible1: true,
+            isEdite: true,
+            userId: data.userId
         })
         this.props.form.setFieldsValue({
             nickName: data.nickName,
             userName: data.userName,
-            sex:data.sex,
-            postcode:data.postcode,
-            address:data.address,
-            remark:data.remark,
-            valueTime:[moment(data.validBegin),moment(data.validEnd)],
-            email:data.email,
-            birthday:data.birthday ? moment(data.birthday) : null,
-            phoneNo:data.phoneNo
+            sex: data.sex + '',
+            postcode: data.postcode,
+            address: data.address,
+            remark: data.remark,
+            valueTime: [moment(data.validBegin), moment(data.validEnd)],
+            email: data.email,
+            birthday: data.birthday ? moment(data.birthday) : null,
+            phoneNo: data.phoneNo,
+            passWord: data.passWord
         })
+        this.getTransferData()
+    }
+    handelConfig = (e) => {
+        this.handelAdd(e)
+    }
+    getTransferData() {
+        axios.post('/role/page', { pageSize: 100, currentPage: 1 }).then(res => {
+            if (res.data.status === 0) {
+                let data = []
+                res.data.result.result.forEach((item, index) => {
+                    data.push({
+                        title: item.roleName,
+                        key: item.roleId
+                    });
+                });
+                this.setState({
+                    transferData: data,
+                });
+            } else {
+                message.error('请求失败')
+            }
+        })
+    }
+    getTransferTarget() {
+        axios.post('/roleUser/queryBySelected').then(res => {
+            if (res.data.status === 0) {
+                let data = []
+                res.data.result.result.forEach((item, index) => {
+                    data.push(item.roleId);
+                });
+                this.setState({
+                    targetKeys: data,
+                });
+            } else {
+                message.error('请求失败')
+            }
+        })
+    }
+    transferChange = (targetKeys) => {
+        this.setState({ targetKeys });
+    }
+    postTransfer() {
+        let data = {
+            userId: this.userId,
+            roleId: this.targetKeys.join(',')
+        }
+        axios.post('/roleUser/updateCodeBatch', data).then((res) => {
+            if (res.data.status === 0) {
+                message.success('修改成功')
+                this.getTransferData()
+                this.getTransferTarget()
+            } else {
+                this.$message('修改失败')
+            }
+        }, (err) => {
+
+        })
+    }
+    jurisdiction(data) {
+        this.setState({
+            visible2: true,
+            userId: data.userId
+        })
+        this.getTreeData()
     }
     render() {
         const { getFieldDecorator } = this.props.form
@@ -190,7 +305,7 @@ class UserMan extends Component {
                 </div>
                 <div className="table-wrapper">
                     <Card>
-                        <Button type="primary" style={{ marginBottom: 15, marginRight: 15 }} onClick={() => {this.setState({ visible: true });this.props.form.resetFields()}}>新增</Button>
+                        <Button type="primary" style={{ marginBottom: 15, marginRight: 15 }} onClick={() => { this.setState({ visible: true, isEdite: false }); this.props.form.resetFields() }}>新增</Button>
                         <Button type="primary" style={{ marginBottom: 15 }}>删除</Button>
                         <Table
                             dataSource={this.state.tableData}
@@ -308,7 +423,7 @@ class UserMan extends Component {
                             </FormItem>
                             <FormItem {...formItemLayout} label="邮箱" colon={false}>
                                 {getFieldDecorator('email', {
-                                    rules: [{ required: true, message: '请填写邮箱' }],
+                                    rules: [{ required: true, type: 'email', message: '请填写邮箱' }],
                                 })(
                                     <Input placeholder="邮箱" />
                                 )}
@@ -322,7 +437,7 @@ class UserMan extends Component {
                             </FormItem>
                             <FormItem {...formItemLayout} label="邮编" colon={false}>
                                 {getFieldDecorator('postcode', {
-                                    rules: [{ required: false, type: 'email', message: '请填写邮编' }],
+                                    rules: [{ required: false, message: '请填写邮编' }],
                                 })(
                                     <Input placeholder="邮编" />
                                 )}
@@ -356,11 +471,12 @@ class UserMan extends Component {
                         onOk={this.handleOk1}
                         onCancel={this.handleCancel1}
                         width={700}
-                        wrapClassName="userMan-modal"
+                        wrapClassName="tabs-modal"
+                        footer={null}
                     >
-                        <Tabs onChange={this.tabsChange} type="card">
+                        <Tabs type="card">
                             <TabPane tab="用户资料" key="1">
-                                <Form layout="inline" onSubmit={this.handelAdd}>
+                                <Form layout="inline" onSubmit={this.handelConfig}>
                                     <FormItem {...formItemLayout} label="用户昵称" colon={false}>
                                         {getFieldDecorator('nickName', {
                                             rules: [{ required: true, message: '请填写用户昵称' }],
@@ -402,7 +518,7 @@ class UserMan extends Component {
                                     </FormItem>
                                     <FormItem {...formItemLayout} label="邮箱" colon={false}>
                                         {getFieldDecorator('email', {
-                                            rules: [{ required: true, message: '请填写邮箱' }],
+                                            rules: [{ required: true, type: 'email', message: '请填写邮箱' }],
                                         })(
                                             <Input placeholder="邮箱" />
                                         )}
@@ -416,7 +532,7 @@ class UserMan extends Component {
                                     </FormItem>
                                     <FormItem {...formItemLayout} label="邮编" colon={false}>
                                         {getFieldDecorator('postcode', {
-                                            rules: [{ required: false, type: 'email', message: '请填写邮编' }],
+                                            rules: [{ required: false, message: '请填写邮编' }],
                                         })(
                                             <Input placeholder="邮编" />
                                         )}
@@ -443,9 +559,52 @@ class UserMan extends Component {
                                         )}
                                     </FormItem>
                                 </Form>
+                                <div className="btn-wrapper">
+                                    <Button style={{ marginRight: 15 }} type="primary" onClick={this.handelConfig}>确定</Button>
+                                    <Button onClick={() => this.setState({ visible1: false })}>取消</Button>
+                                </div>
                             </TabPane>
-                            <TabPane tab="角色分配1" key="2">Content of Tab Pane 2</TabPane>
-                            <TabPane tab="密码修改" key="3">Content of Tab Pane 3</TabPane>
+                            <TabPane tab="角色分配" key="2">
+                                <Transfer
+                                    dataSource={this.state.transferData}
+                                    showSearch
+                                    listStyle={{
+                                        width: 250,
+                                        height: 300,
+                                    }}
+                                    targetKeys={this.state.targetKeys}
+                                    onChange={this.transferChange}
+                                    render={item => item.title}
+                                    className="userTransfer"
+                                />
+                                <div className="btn-wrapper">
+                                    <Button style={{ marginRight: 15 }} type="primary" onClick={this.postTransfer}>确定</Button>
+                                    <Button onClick={() => this.setState({ visible1: false })}>取消</Button>
+                                </div>
+                            </TabPane>
+                            <TabPane tab="密码修改" key="3">
+                                <ChangePassword userId={this.state.userId}></ChangePassword>
+                            </TabPane>
+                        </Tabs>
+                    </Modal>
+                    <Modal
+                        title="用户维护"
+                        visible={this.state.visible2}
+                        onOk={this.handleOk2}
+                        onCancel={this.handleCancel2}
+                        width={700}
+                        wrapClassName="just-modal"
+                        footer={null}
+                        maskClosable={true}
+                    >
+                        <Tabs type="card">
+                            <TabPane tab="资源权限" key="1">
+                                <div className="just-left">
+
+                                </div>
+                            </TabPane>
+                            <TabPane tab="数据权限" key="2">
+                            </TabPane>
                         </Tabs>
                     </Modal>
                 </div>

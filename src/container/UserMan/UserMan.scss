@@ -16,4 +16,47 @@
             }
         }
     }
+    .btn-wrapper {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .userTransfer {
+        text-align: center;
+        .ant-transfer-list-header,.ant-transfer-list-content {
+            text-align: left;
+        }
+    }
+}
+.tabs-modal {
+    .ant-tabs-tabpane {
+        &:first-child {
+            .ant-row {
+                width: 45%;
+                &:last-child {
+                    .ant-form-item-label {
+                        width: 73.34px;
+                    }
+                    .ant-form-item-control-wrapper {
+                        margin-left: 12.2px;
+                        width: 79.5%;
+                    }
+                }
+            }
+        }
+    }
+    .btn-wrapper {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .userTransfer {
+        text-align: center;
+        .ant-transfer-list-header,.ant-transfer-list-content {
+            text-align: left;
+        }
+    }
+}
+.just-modal {
+    .just-left {
+        
+    }
 }
