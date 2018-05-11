@@ -57,6 +57,22 @@
 }
 .just-modal {
     .just-left {
-        
+        float: left;
+        padding: 10px;
+        border: 1px dashed #ccc;
+    }
+    .just-right {
+        float: right;
+        .just-right-top,.just-right-bottom {
+            padding: 20px 15px 0;
+            border: 1px dashed #ccc;
+        }
+        .just-right-bottom {
+            margin-top: 15px;
+        }
+        .table-wrapper {
+            padding: 15px;
+            margin-bottom: 10px;
+        }
     }
 }

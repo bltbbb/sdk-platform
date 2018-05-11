@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 import { message } from 'antd'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
@@ -35,8 +35,8 @@ axios.interceptors.response.use((res) =>{
   if(res.status !== 200){
     return Promise.reject(res);
   }
-  if(res.data.status === 2){
-    Cookies.remove('re_adoptToken')
+  if(res.data.status === 1){
+    Cookies.remove('sdk-cookie')
     return Promise.reject(res);
   }
   return res;

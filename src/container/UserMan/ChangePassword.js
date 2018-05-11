@@ -15,13 +15,13 @@ class ChangePassword extends Component {
                 }
                 const data = {...values,userId:this.props.userId}
                 axios.post('/user/updatePwd', data).then((res) => {
-                    if (res&&res.data.status == 0) {
+                    if (res&&res.data.status === 0) {
                         message.success('修改成功！')
                         this.setState({
                             visible1:false
                         })
                     } else {
-                        res.data?message.error(res.data.result.result.message):''
+                        res.data?message.error(res.data.result.result.message):()=>{}
                     }
                 }, (err) => {
 

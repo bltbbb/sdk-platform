@@ -40,3 +40,7 @@ body {
 .ant-card-body {
   padding: 20px!important;
 }
+
+.ant-table-tbody > tr.ant-table-row-selected td {
+  background: #e6f7ff!important;
+}

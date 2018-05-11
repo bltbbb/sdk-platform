@@ -4,6 +4,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 import ChangePassword from './ChangePassword'
+import TableComp from '../../component/TableComp/TableComp'
 import './UserMan.scss'
 
 const FormItem = Form.Item
@@ -11,12 +12,60 @@ const { Option } = Select
 const { Column } = Table
 const { TextArea } = Input
 const { RangePicker } = DatePicker
-const TabPane = Tabs.TabPane
+const { TabPane } = Tabs
+const { TreeNode } = Tree
 
 const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 17, offset: 1 }
 }
+
+const panelColumns = [
+    {
+        title: '面板名称',
+        dataIndex: 'panelName',
+    },
+    {
+        title: '描述',
+        dataIndex: 'remark',
+    },
+
+    {
+        title: '创建人',
+        dataIndex: 'createUser',
+    },
+]
+const elementColumns = [
+    {
+        title: '元素名称',
+        dataIndex: 'elementName',
+    },
+    {
+        title: '描述',
+        dataIndex: 'remark',
+    },
+
+    {
+        title: '创建人',
+        dataIndex: 'createUser',
+    },
+]
+const dataColumns = [
+    {
+        title: 'json数据',
+        render: (text, record) => {
+            return (
+                <span>
+                    <pre><code>{JSON.stringify(JSON.parse(record.jsonInfo.replace( /^\s*/, '')),null,4)}</code></pre>
+                </span>
+            )
+        }
+    },
+    {
+        title: '描述',
+        dataIndex: 'remark',
+    }
+]
 
 class UserMan extends Component {
     state = {
@@ -24,16 +73,28 @@ class UserMan extends Component {
         total: 0,
         size: 10,
         current: 1,
+        size1: 10,
+        current1: 1,
+        total1: 0,
         visible: false,
         visible1: false,
         visible2: false,
         id: 0,
         isEdite: false,
         selectedRowKeys: [],
+        selectedRowKeys1: [],
         userId: '',
         transferData: [],
         targetKeys: [],
-        treeData: []
+        treeData: [],
+        selectedKeys: [],
+        panelCode: '',
+        panelName: '',
+        elementCode: '',
+        elementName: '',
+        panelTableData: [],
+        elementTableData: [],
+        dataTableData: []
     }
     componentDidMount() {
         this.getUser()
@@ -77,34 +138,28 @@ class UserMan extends Component {
         })
         this.getData(current, size)
     }
+    pageChange1(page, pageSize) {
+        this.setState({
+            current1: page
+        })
+        this.getDataTableData(page, pageSize)
+    }
+    pageSizeChange1(current, size) {
+        this.setState({
+            size1: size
+        })
+        this.getDataTableData(current, size)
+    }
     getTreeData() {
         axios.get('/menu/queryByUserId', {
             params: {
                 userId: this.state.userId
             }
         }).then((res) => {
-            if (res.data.status == 0) {
-                let data = []
-                res.data.result.result.forEach((item, index) => {
-                    data.push(
-                        {
-                            key: item['M:2'],
-                            text: item.label
-                        }
-                    )
-                    if (item.children.length !== 0) {
-                        data.children = []
-                        item.children.forEach(i => {
-                            data.children.push({
-                                key: i['M:2'],
-                                text: i.label
-                            })
-                        })
-                    }
-                })
-                console.log(data)
+            if (res.data.status === 0) {
                 this.setState({
-                    treeData: data
+                    visible2: true,
+                    treeData: res.data.result.result
                 })
             } else {
                 message.error(res.data.result.result.message)
@@ -112,6 +167,34 @@ class UserMan extends Component {
         }, (err) => {
 
         })
+    }
+    onSelect = (selectedKeys) => {
+        this.setState({ selectedKeys });
+        const data = {
+            userId: this.state.userId,
+            privVisitId: selectedKeys[0]
+        }
+        axios.post('/resPanel/queryVisitPanel', data).then((res) => {
+            if (res.data.status == 0) {
+                this.panelTableData = res.data.result.result
+            } else {
+
+            }
+        }, (err) => {
+
+        })
+    }
+    renderTreeNodes = (data) => {
+        return data.map((item) => {
+            if (item.children) {
+                return (
+                    <TreeNode title={item.title} key={item.key} dataRef={item}>
+                        {this.renderTreeNodes(item.children)}
+                    </TreeNode>
+                );
+            }
+            return <TreeNode {...item} />;
+        });
     }
     handelAdd = (e) => {
         e.preventDefault();
@@ -173,6 +256,28 @@ class UserMan extends Component {
     }
     onSelectChange = (selectedRowKeys) => {
         this.setState({ selectedRowKeys });
+    }
+    onSelectChange1 = (selectedRowKeys1) => {
+        this.setState({ selectedRowKeys1 });
+    }
+    panelRowClick = (record) => {
+        // 设置paneltable选中
+        const selectedRowKeys1 = [record.id]
+        this.setState({ selectedRowKeys1 });
+
+        let data = {
+            privVisitId: this.state.selectedKeys[0],
+            panelId: record.panelId
+        }
+        axios.post('/element/queryVisitElement', data).then((res) => {
+            if (res.data.status == 0) {
+                this.elementTableData = res.data.result.result
+            } else {
+
+            }
+        }, (err) => {
+
+        })
     }
     configUser(data) {
         this.setState({
@@ -253,17 +358,56 @@ class UserMan extends Component {
     }
     jurisdiction(data) {
         this.setState({
-            visible2: true,
             userId: data.userId
+        }, () => {
+            this.getTreeData()
+            this.getDataTableData()
         })
-        this.getTreeData()
+    }
+    onChange(key, e) {
+        this.setState({
+            [key]: e.target.value
+        })
+    }
+    searchPanel = () => {
+
+    }
+    searchElement = () => {
+
+    }
+    getDataTableData() {
+        let data = {
+            userId: this.state.userId,
+            pageSize: this.state.size1,
+            currentPage: this.state.current1,
+          }
+        axios.post('/dataauth/queryByUser', data).then((res) => {
+            if (res.data.status == 0) {
+                this.setState({
+                    total1 : res.data.result.totalCount
+                })
+                this.setState({
+                    dataTableData: res.data.result.result
+                })
+            } else {
+
+            }
+        }, (err) => {
+
+        })
     }
     render() {
         const { getFieldDecorator } = this.props.form
-        const { selectedRowKeys } = this.state;
+        const { selectedRowKeys, selectedRowKeys1 } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
+        };
+        const rowSelection1 = {
+            selectedRowKeys: selectedRowKeys1,
+            onChange: this.onSelectChange1,
+            hideDefaultSelections: true,
+            type: 'radio'
         };
         return (
             <div className="userMan">
@@ -592,7 +736,7 @@ class UserMan extends Component {
                         visible={this.state.visible2}
                         onOk={this.handleOk2}
                         onCancel={this.handleCancel2}
-                        width={700}
+                        width={800}
                         wrapClassName="just-modal"
                         footer={null}
                         maskClosable={true}
@@ -600,10 +744,70 @@ class UserMan extends Component {
                         <Tabs type="card">
                             <TabPane tab="资源权限" key="1">
                                 <div className="just-left">
+                                    {this.state.treeData.length > 0 ?
+                                        <Tree
+                                            onSelect={this.onSelect}
+                                            checkedKeys={this.state.checkedKeys}
+                                        >
+                                            {this.renderTreeNodes(this.state.treeData)}
 
+                                        </Tree>
+                                        : <span>无数据</span>}
+                                </div>
+                                <div className="just-right">
+                                    <div className="just-right-top">
+                                        <div className="input-wrapper" style={{ padding: '0 5px' }}>
+                                            <div className="input-main" style={{ marginLeft: 20 }}>
+                                                <Input placeholder='接收人' style={{ width: 220, marginRight: '20px' }} value={this.state.panelCode} onChange={this.onChange.bind(this, 'panelCode')}></Input>
+                                                <Input placeholder='标题' style={{ width: 220, marginRight: '20px' }} value={this.state.panelName} onChange={this.onChange.bind(this, 'panelName')}></Input>
+                                                <Button type="primary" shape="circle" icon="search" onClick={this.searchPanel} />
+                                            </div>
+                                        </div>
+                                        <div className="table-wrapper">
+                                            <Table
+                                                dataSource={this.state.panelTableData}
+                                                columns={panelColumns}
+                                                pagination={false}
+                                                rowKey={record => record.id}
+                                                rowSelection={rowSelection1}
+                                                onRow={(record) => {
+                                                    return {
+                                                        onClick: () => { this.panelRowClick(record) },       // 点击行
+                                                    };
+                                                }}
+                                            >
+                                            </Table>
+                                        </div>
+                                    </div>
+                                    <div className="just-right-bottom">
+                                        <div className="input-wrapper" style={{ padding: '0 5px' }}>
+                                            <div className="input-main" style={{ marginLeft: 20 }}>
+                                                <Input placeholder='接收人' style={{ width: 220, marginRight: '20px' }} value={this.state.elementCode} onChange={this.onChange.bind(this, 'elementCode')}></Input>
+                                                <Input placeholder='标题' style={{ width: 220, marginRight: '20px' }} value={this.state.elementName} onChange={this.onChange.bind(this, 'elementName')}></Input>
+                                                <Button type="primary" shape="circle" icon="search" onClick={this.searchElement} />
+                                            </div>
+                                        </div>
+                                        <div className="table-wrapper">
+                                            <Table
+                                                dataSource={this.state.elementTableData}
+                                                columns={elementColumns}
+                                                pagination={false}
+                                            >
+                                            </Table>
+                                        </div>
+                                    </div>
                                 </div>
                             </TabPane>
                             <TabPane tab="数据权限" key="2">
+                                <TableComp
+                                    dataSource={this.state.dataTableData}
+                                    rowKey={record=>record.id}
+                                    columns={dataColumns}
+                                    changePage={this.pageChange1.bind(this)}
+                                    pageSizeChange={this.pageSizeChange1.bind(this)}
+                                    total={this.state.total1}
+                                >
+                                </TableComp>
                             </TabPane>
                         </Tabs>
                     </Modal>
