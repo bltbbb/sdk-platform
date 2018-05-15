@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { message,Form,Input,Button } from 'antd'
+import { message, Form, Input, Button } from 'antd'
 import axios from 'axios'
 
 const FormItem = Form.Item
@@ -13,15 +13,17 @@ class ChangePassword extends Component {
                     message.error('两次密码不一致，请重新输入！')
                     return
                 }
-                const data = {...values,userId:this.props.userId}
+                const data = { ...values, userId: this.props.userId }
                 axios.post('/user/updatePwd', data).then((res) => {
-                    if (res&&res.data.status === 0) {
+                    if (res && res.data.status === 0) {
                         message.success('修改成功！')
                         this.setState({
-                            visible1:false
+                            visible1: false
                         })
                     } else {
-                        res.data?message.error(res.data.result.result.message):()=>{}
+                        if (res.data) {
+                            message.error(res.data.result.result.message)
+                        }
                     }
                 }, (err) => {
 

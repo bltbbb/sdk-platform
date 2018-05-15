@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import Cookies from 'js-cookie'
 import { message } from 'antd'
+import { BrowserRouter } from 'react-router-dom'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 // axios.defaults.baseURL = 'http://192.168.1.21:9999';
@@ -37,6 +38,7 @@ axios.interceptors.response.use((res) =>{
   }
   if(res.data.status === 1){
     Cookies.remove('sdk-cookie')
+    console.log(BrowserRouter.push)
     return Promise.reject(res);
   }
   return res;

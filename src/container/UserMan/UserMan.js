@@ -175,7 +175,7 @@ class UserMan extends Component {
             privVisitId: selectedKeys[0]
         }
         axios.post('/resPanel/queryVisitPanel', data).then((res) => {
-            if (res.data.status == 0) {
+            if (res.data.status === 0) {
                 this.panelTableData = res.data.result.result
             } else {
 
@@ -188,7 +188,7 @@ class UserMan extends Component {
         return data.map((item) => {
             if (item.children) {
                 return (
-                    <TreeNode title={item.title} key={item.key} dataRef={item}>
+                    <TreeNode title={item.title} key={item.privVisitId} dataRef={item}>
                         {this.renderTreeNodes(item.children)}
                     </TreeNode>
                 );
@@ -270,7 +270,7 @@ class UserMan extends Component {
             panelId: record.panelId
         }
         axios.post('/element/queryVisitElement', data).then((res) => {
-            if (res.data.status == 0) {
+            if (res.data.status === 0) {
                 this.elementTableData = res.data.result.result
             } else {
 
@@ -382,7 +382,7 @@ class UserMan extends Component {
             currentPage: this.state.current1,
           }
         axios.post('/dataauth/queryByUser', data).then((res) => {
-            if (res.data.status == 0) {
+            if (res.data.status === 0) {
                 this.setState({
                     total1 : res.data.result.totalCount
                 })
@@ -747,7 +747,6 @@ class UserMan extends Component {
                                     {this.state.treeData.length > 0 ?
                                         <Tree
                                             onSelect={this.onSelect}
-                                            checkedKeys={this.state.checkedKeys}
                                         >
                                             {this.renderTreeNodes(this.state.treeData)}
 

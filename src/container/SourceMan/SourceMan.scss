@@ -1,0 +1,46 @@
+.sorcerman-wrapper {
+    overflow: hidden;
+    .left {
+        float: left;
+        width: 20%;
+        min-width: 200px;
+    }
+    .tree-wrapper {
+        border: 1px dashed #ccc;
+        margin-top: 20px;
+    }
+    .right {
+        float: left;
+        width: 75%;
+        margin-left: 5%;
+        .ant-tabs-tabpane {
+            &:first-child {
+                .ant-row {
+                    width: 45%;
+                    margin-bottom: 15px;
+                }
+            }
+        }
+        .input-wrapper {
+            margin-bottom: 15px;
+        }
+        .btn-wrapper {
+            text-align: center;
+        }
+        .top {
+            padding: 15px 20px;
+            border: 1px dashed #ccc;
+        }
+        .bottom {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border: 1px dashed #ccc;
+        }
+    }
+}
+.menu-modal {
+    .ant-row {
+        width: 45%;
+        margin-bottom: 15px;
+    }
+}
