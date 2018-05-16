@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import AuthRouter from './component/AuthRouter/AuthRouter'
 import { Provider } from 'react-redux'
 
 import configureStore from './configureStore'
+import history from './history'
 import './config'
 import './index.css'
 
@@ -17,7 +18,7 @@ class App extends Component {
     render() {
         return (
             <Provider store={store}>
-                <BrowserRouter>
+                <Router history={history}>
                     <div style={{ width: '100%', height: '100%' }}>
                         <AuthRouter></AuthRouter>
                         <Switch>
@@ -29,7 +30,7 @@ class App extends Component {
                             <Route component={SkeletonWrap}></Route>
                         </Switch>
                     </div>
-                </BrowserRouter>
+                </Router>
             </Provider>
         );
     }

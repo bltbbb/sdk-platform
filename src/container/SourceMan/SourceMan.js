@@ -666,12 +666,13 @@ class SourceMan extends Component {
                                         >
                                             <Select
                                                 showSearch
-                                                style={{ width: '100%',marginBottom: 15 }}
+                                                style={{ width: '100%', marginBottom: 15 }}
                                                 onChange={this.selectChange}
                                                 placeholder="Select a person"
+                                                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                             >
                                                 {
-                                                    this.state.urlNotSelectedData.map(v=>(
+                                                    this.state.urlNotSelectedData.map(v => (
                                                         <Option key={v.urlId} value={v.index}>{v.urlPath}</Option>
                                                     ))
                                                 }
